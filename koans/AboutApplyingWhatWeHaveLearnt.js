@@ -97,26 +97,104 @@ describe("About Applying What We Have Learnt", function() {
 
   /*********************************************************************************/
   /* UNCOMMENT FOR EXTRA CREDIT */
-  /*
   it("should find the largest prime factor of a composite number", function () {
-
+	var inputNr = 1035;
+	var result = _(_.range(inputNr / 2 + 1)) // restrict range here
+		.chain()
+		.filter(function(item){
+			var isPrime = true;
+			var isFactor = false;
+			if(inputNr % item == 0){
+				isFactor = true;
+			}
+			if(isFactor === true){
+				var limit = Math.sqrt(item);//optimization (see Wikipedia), very slow otherwise
+				for(var i = 2; (i <= limit) && isPrime; i += 1 ){
+					if(item % i === 0){
+						isPrime = false;
+					}
+				}
+			}
+			return isPrime && isFactor;
+		})
+		.reduce(function(memo, elem){
+			if(memo > elem){
+				return memo;
+			}
+			else{
+				return elem;
+			}			
+		}, 0)
+		.value();
+	if(result === 1){
+		result = inputNr; // the input number is prime
+	}
+	expect(result).toBe(23);
   });
 
   it("should find the largest palindrome made from the product of two 3 digit numbers", function () {
-
+	var maxNr = 999;
+	var maxRes = maxNr * maxNr;
+	
+	// get the reverse of a number as string
+	function getReverse(x){
+		var res = x.toString().split("").reverse().join("");	
+		return res;
+	}
+	var result = 0;
+	for(var i = maxRes; i >= 0; i-=1){
+		if(i.toString() == getReverse(i)){
+			result = i;
+			break;
+		}
+	}
+	expect(result).toBe(997799);
   });
 
   it("should find the smallest number divisible by each of the numbers 1 to 20", function () {
-
-
+	// prime numbers smaller than 21, powered by the maximum number without passing over 20
+	var primeNrFactors = [2*2*2*2, 3*3, 5, 7, 11, 13, 17, 19];
+	var result = primeNrFactors.reduce(function(memo, x){return memo * x;}, 1);
+	expect(result).toBe(232792560);
   });
 
   it("should find the difference between the sum of the squares and the square of the sums", function () {
-
+	var result = 0;
+	var input = [1, 2, 3, 4, 5];
+	var sum = _(input).reduce(function(sum, x){return sum + x}, 0);
+	var squares = _(input).map(function(x){return x*x});
+	var sumOfSquares = _(squares).reduce(function(sum, x){return sum + x}, 0);
+	result = sumOfSquares - sum * sum;
+	expect(result).toBe(-170);
   });
 
-  it("should find the 10001st prime", function () {
-
+  it("should find the 10001st prime", function () {  
+	var result = 2; //prime num,bers list starts from 2
+	
+	function isPrime(item){
+		var ret = true;
+		var limit = Math.sqrt(item);//optimization (see Wikipedia), very slow otherwise
+		for(var i = 2; (i <= limit) && ret; i += 1 ){
+			if(item % i === 0){
+				ret = false;
+			}
+		}
+		return ret;
+	}
+	
+	var maxIdx = 10001;
+	var count = 0;
+	while(true)
+	{
+		if(isPrime(result)){
+			count+=1;
+			if(count === maxIdx){
+				break;
+			}
+		}
+		result+=1;
+	}
+	
+	expect(result).toBe(104743);
   });
-  */
 });
