@@ -134,7 +134,7 @@ describe("About Applying What We Have Learnt", function() {
 
   it("should find the largest palindrome made from the product of two 3 digit numbers", function () {
 	var maxNr = 999;
-	var maxRes = maxNr * maxNr;
+	var minNr = 100;
 	
 	// get the reverse of a number as string
 	function getReverse(x){
@@ -142,13 +142,18 @@ describe("About Applying What We Have Learnt", function() {
 		return res;
 	}
 	var result = 0;
-	for(var i = maxRes; i >= 0; i-=1){
-		if(i.toString() == getReverse(i)){
-			result = i;
-			break;
+	for(var i = maxNr; (i >= minNr); i-=1){
+		for(var j = maxNr; j >= i; j-=1){
+			var prod = i * j;
+			if(prod.toString() === getReverse(prod)){
+				if(prod > result){
+					result = prod;
+				}
+				break;
+			}
 		}
 	}
-	expect(result).toBe(997799);
+	expect(result).toBe(906609);
   });
 
   it("should find the smallest number divisible by each of the numbers 1 to 20", function () {
